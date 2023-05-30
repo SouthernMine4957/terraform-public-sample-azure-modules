@@ -11,7 +11,7 @@ variable "rg-name" {
 }
 
 variable "tags" {
-  description = "OPTIONAL - Defaults to null"
+  description = "(OPTIONAL) Defaults to null"
   type        = map(string)
   default     = null
 }
@@ -25,9 +25,13 @@ variable "subnet_id" {
 }
 
 variable "private-ip-address-allocation" {
-  description = "Defaults to Dynamic"
+  description = "The allocation method used for the Private IP Address. Possible values are Dynamic and Static. Defaults to Dynamic"
   type        = string
   default     = "Dynamic"
+  validation {
+    condition     = contains(["Dynamic", "Static"], var.private-ip-address-allocation)
+    error_message = "Possible values are case sensitive Dynamic and Static."
+  }
 }
 
 variable "public_ip_address_id" {
