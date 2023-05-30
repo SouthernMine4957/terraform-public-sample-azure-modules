@@ -1,4 +1,4 @@
-variable "nsg-name" {
+variable "name" {
   type = string
 }
 
@@ -11,7 +11,7 @@ variable "rg-name" {
 }
 
 variable "tags" {
-  description = "(OPTIONAL) Defaults to null"
+  description = "(Optional) A mapping of tags to assign to the resource."
   type        = map(string)
   default     = null
 }
