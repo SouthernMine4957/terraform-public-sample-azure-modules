@@ -46,17 +46,10 @@ variable "security-rule-protocol" {
   }
 }
 
-variable "security-rule-source-port-range-count" {
-  
-}
-
-variable "security-rule-destination-port-range-count" {
-  
-}
-
 variable "security-rule-source-port-range" {
   description = "(Optional) Source Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if source_port_ranges is not specified."
   type        = string
+  default     = null
   validation {
     condition     = var.security-rule-source-port-ranges >= 0 && var.security-rule-source-port-ranges <= 65535
     error_message = "Integer or range between 0 and 65535 or * to match any."
@@ -66,6 +59,7 @@ variable "security-rule-source-port-range" {
 variable "security-rule-destination-port-range" {
   description = "(Optional) Destination Port or Range. Integer or range between 0 and 65535 or * to match any. This is required if destination_port_ranges is not specified."
   type        = string
+  default     = null
   validation {
     condition     = var.security-rule-destination-port-ranges >= 0 && var.security-rule-destination-port-ranges <= 65535
     error_message = "Integer or range between 0 and 65535 or * to match any."
@@ -74,28 +68,46 @@ variable "security-rule-destination-port-range" {
 
 variable "security-rule-source-port-ranges" {
   description = "(Optional) List of source ports or port ranges. This is required if source_port_range is not specified."
-  type        = list(string)
-#   validation {
-#     condition     = var.security-rule-source-port-ranges >= 0 && var.security-rule-source-port-ranges <= 65535
-#     error_message = "Integer or range between 0 and 65535 or * to match any."
-#   }
+  type        = list(number)
+  default     = null
+  validation {
+    condition     = alltrue([for n in var.security-rule-source-port-ranges : n >= 0 && n <= 65535])
+    error_message = "Each integer or range between 0 and 65535."
+  }
 }
 
 variable "security-rule-destination-port-ranges" {
   description = "(Optional) List of destination ports or port ranges. This is required if destination_port_range is not specified."
-  type        = list(string)
-#   validation {
-#     condition     = var.security-rule-destination-port-ranges >= 0 && var.security-rule-destination-port-ranges <= 65535
-#     error_message = "Integer or range between 0 and 65535 or * to match any."
-#   }
+  type        = list(number)
+  default     = null
+  validation {
+    condition     = alltrue([for n in var.security-rule-source-port-ranges : n >= 0 && n <= 65535])
+    error_message = "Each integer or range between 0 and 65535."
+  }
 }
 
 variable "security-rule-source-address-prefix" {
   description = "(Optional) CIDR or source IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. This is required if source_address_prefixes is not specified."
+  type        = string
+  default     = null
 }
 
 variable "security-rule-destination-address-prefix" {
+  description = "(Optional) CIDR or destination IP range or * to match any IP. Tags such as VirtualNetwork, AzureLoadBalancer and Internet can also be used. Besides, it also supports all available Service Tags like ‘Sql.WestEurope‘, ‘Storage.EastUS‘, etc. You can list the available service tags with the CLI: shell az network list-service-tags --location westcentralus. For further information please see Azure CLI - az network list-service-tags. This is required if destination_address_prefixes is not specified."
+  type        = string
+  default     = null
+}
 
+variable "security-rule-source-address-prefixes" {
+  description = "(Optional) List of source address prefixes. Tags may not be used. This is required if source_address_prefix is not specified."
+  type        = string
+  default     = null
+}
+
+variable "security-rule-destination-address-prefixes" {
+  description = "(Optional) List of destination address prefixes. Tags may not be used. This is required if destination_address_prefix is not specified."
+  type        = string
+  default     = null
 }
 
 variable "security-rule-description" {
