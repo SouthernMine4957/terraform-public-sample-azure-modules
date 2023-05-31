@@ -10,6 +10,7 @@ variable "virtual-machine-id" {
 variable "is-enabled" {
   description = "(Optional) Whether to enable the schedule. Possible values are true and false. Defaults to true."
   type        = bool
+  default     = true
 }
 
 variable "timezone" {
@@ -36,14 +37,17 @@ variable "is-notification-enabled" {
 variable "email" {
   description = "(Optional) E-mail address to which the notification will be sent."
   type        = string
+  default     = null
 }
 
 variable "time-in-minutes" {
   description = "(Optional) Time in minutes between 15 and 120 before a shutdown event at which a notification will be sent. Defaults to 30."
   type        = number
+  default     = null
 }
 
 variable "webhook-url" {
   description = "(Optional) The webhook URL to which the notification will be sent."
   type        = string
+  default     = null
 }
